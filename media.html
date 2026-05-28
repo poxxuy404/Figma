@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Media Queries | Interaktiv dars</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', 'Roboto', sans-serif;
+            background: #e0e0e0;
+            padding: 30px 0;
+        }
+
+        .slide {
+            max-width: 1100px;
+            margin: 25px auto;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-content {
+            padding: 50px 60px 40px 60px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #000;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: #000;
+            border-bottom: 2px solid #000;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #000;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            color: #111;
+        }
+
+        ul,
+        ol {
+            margin: 12px 0 12px 30px;
+        }
+
+        li {
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 8px 0;
+            color: #111;
+        }
+
+        pre {
+            background: #1e1e2f;
+            border: 1px solid #333;
+            padding: 16px;
+            margin: 18px 0;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Menlo', 'Courier New', monospace;
+            font-size: 13px;
+            border-radius: 8px;
+            color: #e4e4e7;
+        }
+
+        code {
+            font-family: 'SF Mono', 'Menlo', 'Courier New', monospace;
+            font-size: 13px;
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #d41a4a;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #e4e4e7;
+        }
+
+        .page-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+            font-family: monospace;
+        }
+
+        .monday {
+            font-weight: normal;
+            text-transform: lowercase;
+            font-family: monospace;
+        }
+
+        .note-box {
+            background: #f9f9f9;
+            border-left: 3px solid #888;
+            padding: 12px 18px;
+            margin: 18px 0;
+            font-size: 14px;
+        }
+
+        /* INTERAKTIV ELEMENTLAR */
+        .preview-container {
+            background: #f8f8fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .preview-header {
+            background: #000;
+            color: white;
+            padding: 10px 16px;
+            font-size: 12px;
+            font-family: monospace;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-body {
+            padding: 20px;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .resize-bar {
+            background: #e0e0e0;
+            padding: 8px;
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            cursor: ew-resize;
+            font-family: monospace;
+            border-top: 1px solid #ccc;
+        }
+
+        .resize-bar:hover {
+            background: #d0d0d0;
+        }
+
+        .device-buttons {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+
+        .device-btn {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-family: monospace;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .device-btn img,
+        .device-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .device-btn:hover {
+            background: #e0e0e0;
+            border-color: #999;
+        }
+
+        .device-btn.active {
+            background: #000;
+            color: white;
+            border-color: #000;
+        }
+
+        .width-indicator {
+            font-size: 11px;
+            font-family: monospace;
+            text-align: center;
+            padding: 8px;
+            background: #f8f8fa;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+
+        /* Kod muharriri */
+        .code-editor {
+            background: #1e1e2f;
+            color: #e4e4e7;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            border: none;
+            width: 100%;
+            resize: vertical;
+            border-radius: 0;
+            line-height: 1.5;
+        }
+
+        .run-btn {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 13px;
+            font-family: monospace;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .run-btn:hover {
+            background: #333;
+            transform: translateY(-1px);
+        }
+
+        /* Demo elementlar */
+        .demo-card {
+            background: #007aff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .demo-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .demo-cards .card {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1 1 200px;
+        }
+
+        /* Iconlar */
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 700px) {
+            .slide-content {
+                padding: 30px 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SLIDE 1: Kirish -->
+    <div class="slide">
+        <div class="slide-content">
+            <h1>CSS Media Queries</h1>
+            <p style="font-size: 18px; margin-top: 20px;">@media — saytni telefon, planshet va kompyuterga moslashtirish
+            </p>
+            <div class="page-footer">
+                <span class="monday">css-media-queries</span>
+                <span>1 / 8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: Media Query nima? -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Media Query nima?</h2>
+            <p><strong>Media Query</strong> — veb-saytni turli qurilmalarga (telefon, planshet, kompyuter) moslashtirish
+                imkonini beradi.</p>
+
+            <div class="note-box">
+                <strong>Sodda qilib:</strong> "Agar ekran kengligi 600px dan kichik bo'lsa, ushbu uslublarni qo'lla"
+                degan shart.
+            </div>
+
+            <pre><code>@media (max-width: 600px) {
+    body {
+        background: #f0f0f0;
+    }
+    h1 {
+        font-size: 24px;
+    }
+}</code></pre>
+
+            <div class="preview-container">
+                <div class="preview-header">
+                    <span> Amaliy ko'rinish</span>
+                    <span>quyidagi oynani kichraytiring</span>
+                </div>
+                <div class="preview-body" id="demo1Body">
+                    <style id="demo1Style">
+                        .demo1-box {
+                            background: #007aff;
+                            color: white;
+                            padding: 20px;
+                            text-align: center;
+                            border-radius: 8px;
+                        }
+
+                        @media (max-width: 600px) {
+                            .demo1-box {
+                                background: #ff3b30;
+                                font-size: 14px;
+                                padding: 10px;
+                            }
+                        }
+                    </style>
+                    <div class="demo1-box">
+                        Bu element o'zgaradi
+                        <div style="font-size: 12px; margin-top: 8px;">Oynani 600px dan kichik qiling — rang va o'lcham
+                            o'zgaradi</div>
+                    </div>
+                </div>
+                <div class="device-buttons">
+                    <button class="device-btn" data-width="375"> Telefon (375px)</button>
+                    <button class="device-btn" data-width="768"> Planshet (768px)</button>
+                    <button class="device-btn" data-width="1024"> Kompyuter (1024px)</button>
+                    <button class="device-btn active" data-width="auto"> Auto</button>
+                </div>
+                <div class="resize-bar" id="demo1Resize">━━━ Chetidan sudrab kenglikni o'zgartiring ━━━</div>
+                <div class="width-indicator" id="demo1Width">Kenglik: ---px</div>
+            </div>
+
+            <script>
+                const demo1Body = document.getElementById('demo1Body');
+                const demo1Width = document.getElementById('demo1Width');
+                let demo1WidthValue = 'auto';
+
+                function updateDemo1Width(width) {
+                    if (width === 'auto') {
+                        demo1Body.style.width = 'auto';
+                        demo1Width.innerText = 'Kenglik: oyna o\'lchamiga moslashadi';
+                    } else {
+                        demo1Body.style.width = width + 'px';
+                        demo1Width.innerText = `Kenglik: ${width}px`;
+                    }
+                }
+
+                document.querySelectorAll('#demo1Body .device-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('#demo1Body .device-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const width = btn.getAttribute('data-width');
+                        demo1WidthValue = width;
+                        updateDemo1Width(width);
+                    });
+                });
+
+                let isResizing1 = false;
+                const resize1 = document.getElementById('demo1Resize');
+                resize1.addEventListener('mousedown', () => { isResizing1 = true; });
+                window.addEventListener('mouseup', () => { isResizing1 = false; });
+                window.addEventListener('mousemove', (e) => {
+                    if (isResizing1 && demo1WidthValue === 'auto') {
+                        const rect = demo1Body.getBoundingClientRect();
+                        const newWidth = e.clientX - rect.left;
+                        if (newWidth > 200 && newWidth < 1000) {
+                            demo1Body.style.width = newWidth + 'px';
+                            demo1Width.innerText = `Kenglik: ${Math.round(newWidth)}px`;
+                        }
+                    }
+                });
+            </script>
+
+            <div class="page-footer">
+                <span class="monday">css-media-queries</span>
+                <span>2 / 8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: Breakpoints va turlari -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Breakpoints (qurilma o'lchamlari)</h2>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <tr style="background: #f5f5f5;">
+                    <th style="border: 1px solid #ddd; padding: 10px;">Qurilma</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">Kenglik</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">Media Query</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Telefon</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">0 - 600px</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>@media (max-width: 600px)</code></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Planshet</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">601 - 1024px</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">
+                        <code>@media (min-width: 601px) and (max-width: 1024px)</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Kompyuter</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">1025px+</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><code>@media (min-width: 1025px)</code></td>
+                </tr>
+            </table>
+
+            <h3>Mobile First (tavsiya etiladi)</h3>
+            <pre><code>/* Avval telefon uslubi */
+.container { flex-direction: column; }
+/* Keyin planshet */
+@media (min-width: 768px) {
+    .container { flex-direction: row; }
+}
+/* Keyin kompyuter */
+@media (min-width: 1024px) {
+    .container { max-width: 1200px; }
+}</code></pre>
+
+            <div class="page-footer">
+                <span class="monday">css-media-queries</span>
+                <span>3 / 8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: INTERAKTIV KOD MUHARRIRI -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2> O'zingiz sinab ko'ring</h2>
+            <p>Quyidagi kodni o'zgartiring va natijani real vaqtda ko'ring!</p>
+
+            <div class="preview-container">
+                <div class="preview-header">
+                    <span> Kod muharriri</span>
+                    <span>O'zgartirish kiritib, "Ishlatish" ni bosing</span>
+                </div>
+                <div style="padding: 0;">
+                    <textarea id="liveCode" class="code-editor" rows="14" style="width: 100%; font-size: 12px;">/* Asosiy uslub */
+.test-element {
+    background: #007aff;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+/* TELEFON (600px dan kichik) */
+@media (max-width: 600px) {
+    .test-element {
+        background: #ff3b30;
+        font-size: 12px;
+        padding: 10px;
+    }
+}
+
+/* PLANSHEt (601px - 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .test-element {
+        background: #34c759;
+        font-size: 16px;
+        padding: 20px;
+    }
+}
+
+/* KOMPYUTER (1025px dan katta) */
+@media (min-width: 1025px) {
+    .test-element {
+        background: #007aff;
+        font-size: 20px;
+        padding: 30px;
+    }
+}</textarea>
+                    <div style="padding: 8px 16px;">
+                        <button class="run-btn" id="runLiveCode"> Ishlatish</button>
+                    </div>
+                </div>
+                <div class="preview-header" style="background: #333;">
+                    <span> Natija</span>
+                    <span>Oynani kengligini o'zgartirib ko'ring</span>
+                </div>
+                <div class="preview-body" id="liveResult" style="min-height: 120px;">
+                    <div class="test-element">
+                        Bu element o'zgaradi
+                        <div style="font-size: 11px; margin-top: 8px;">Oynani kichraytiring/kattalashtiring</div>
+                    </div>
+                </div>
+                <div class="resize-bar" id="liveResize">━━━ Chetidan sudrab kenglikni o'zgartiring ━━━</div>
+                <div class="width-indicator" id="liveWidth">Kenglik: ---px</div>
+            </div>
+
+            <div class="note-box">
+                <strong>Maslahat:</strong> Koddagi ranglarni, o'lchamlarni o'zgartiring va natijani kuzating!
+            </div>
+
+            <script>
+                const liveStyle = document.createElement('style');
+                document.head.appendChild(liveStyle);
+                const runBtn = document.getElementById('runLiveCode');
+                const codeArea = document.getElementById('liveCode');
+                const liveResultDiv = document.getElementById('liveResult');
+                const liveWidthSpan = document.getElementById('liveWidth');
+
+                runBtn.addEventListener('click', () => {
+                    liveStyle.textContent = codeArea.value;
+                });
+
+                function updateLiveWidth() {
+                    liveWidthSpan.innerText = `Kenglik: ${liveResultDiv.offsetWidth}px`;
+                }
+
+                let isResizingLive = false;
+                const liveResize = document.getElementById('liveResize');
+                liveResize.addEventListener('mousedown', () => { isResizingLive = true; });
+                window.addEventListener('mouseup', () => { isResizingLive = false; });
+                window.addEventListener('mousemove', (e) => {
+                    if (isResizingLive) {
+                        const rect = liveResultDiv.getBoundingClientRect();
+                        const newWidth = e.clientX - rect.left;
+                        if (newWidth > 200 && newWidth < 1000) {
+                            liveResultDiv.style.width = newWidth + 'px';
+                            updateLiveWidth();
+                        }
+                    }
+                });
+                updateLiveWidth();
+            </script>
+
+            <div class="page-footer">
+                <span class="monday">css-media-queries</span>
+                <span>4 / 8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: Responsive navbar -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2> Misol: Responsive navbar</h2>
+            <p>Ekran kengligiga qarab menyu o'zgaradi</p>
+
+            <div class="preview-container">
+                <div class="preview-header">
+                    <span> Responsive Navbar</span>
+                    <span>600px dan kichikda burger menyu</span>
+                </div>
+                <div class="preview-body" id="navbarBody" style="padding: 0;">
+                    <style id="navbarStyle">
+                        .navbar-demo {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            background: #000;
+                            color: white;
+                            padding: 15px 20px;
+                        }
+
+                        .logo-demo {
+                            font-size: 20px;
+                            font-weight: bold;
+                        }
+
+                        .nav-links-demo {
+                            display: flex;
+                            gap: 20px;
+                        }
+
+                        .nav-links-demo a {
+                            color: white;
+                            text-decoration: none;
+                        }
+
+                        .menu-icon-demo {
+                            display: none;
+                            font-size: 24px;
+                            cursor: pointer;
+                        }
+
+                        @media (max-width: 600px) {
+                            .nav-links-demo {
+                                display: none;
+                            }
+
+                            .menu-icon-demo {
+                                display: block;
+                            }
+                        }
+                    </style>
+                    <div class="navbar-demo">
+                        <div class="logo-demo">MySite</div>
+                        <div class="nav-links-demo">
+                            <a href="#">Bosh sahifa</a>
+                            <a href="#">Xizmatlar</a>
+                            <a href="#">Portfolio</a>
+                            <a href="#">Aloqa</a>
+                        </div>
+                        <div class="menu-icon-demo">☰</div>
+                    </div>
+                    <div style="padding: 15px; text-align: center; font-size: 12px; color: #666;">
+                        Oynani 600px dan kichik qiling — menyu yashirinadi, burger menyu paydo bo'ladi
+                    </div>
+                </div>
+                <div class="device-buttons">
+                    <button class="device-btn nav-btn" data-width="375"> Telefon</button>
+                    <button class="device-btn nav-btn" data-width="768"> Planshet</button>
+                    <button class="device-btn nav-btn" data-width="1024"> Kompyuter</button>
+                    <button class="device-btn nav-btn active" data-width="auto"> Auto</button>
+                </div>
+                <div class="resize-bar" id="navbarResize">━━━ Chetidan sudrab kenglikni o'zgartiring ━━━</div>
+                <div class="width-indicator" id="navbarWidth">Kenglik: ---px</div>
+            </div>
+
+            <script>
+                const navbarBody = document.getElementById('navbarBody');
+                const navbarWidth = document.getElementById('navbarWidth');
+                let navbarWidthValue = 'auto';
+
+                function updateNavbarWidth(width) {
+                    if (width === 'auto') {
+                        navbarBody.style.width = 'auto';
+                        navbarWidth.innerText = 'Kenglik: oyna o\'lchamiga moslashadi';
+                    } else {
+                        navbarBody.style.width = width + 'px';
+                        navbarWidth.innerText = `Kenglik: ${width}px`;
+                    }
+                }
+
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const width = btn.getAttribute('data-width');
+                        navbarWidthValue = width;
+                        updateNavbarWidth(width);
+                    });
+                });
+
+                let isResizingNav = false;
+                const navResize = document.getElementById('navbarResize');
+                navResize.addEventListener('mousedown', () => { isResizingNav = true; });
+                window.addEventListener('mouseup', () => { isResizingNav = false; });
+                window.addEventListener('mousemove', (e) => {
+                    if (isResizingNav && navbarWidthValue === 'auto') {
+                        const rect = navbarBody.getBoundingClientRect();
+                        const newWidth = e.clientX - rect.left;
+                        if (newWidth > 200 && newWidth < 1000) {
+                            navbarBody.style.width = newWidth + 'px';
+                            navbarWidth.innerText = `Kenglik: ${Math.round(newWidth)}px`;
+                        }
+                    }
+                });
+            </script>
+
+            <div class="page-footer">
+                <span class="monday">css-media-queries</span>
+                <span>5 / 8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: Responsive kartochkalar -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2> Misol: Responsive kartochkalar</h2>
+            <p>Ekran kengligiga qarab kartochkalar soni o'zgaradi</p>
+
+            <div class="preview-container">
+                <div class="preview-header">
+                    <span> Responsive galereya</span>
+                    <span>Kompyuter: 3 ustun | Planshet: 2 ustun | Telefon: 1 ustun</span>
+                </div>
+                <div class="preview-body" id="cardsBody" style="padding: 0;">
+                    <style id="cardsStyle">
+                        .cards-demo {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 20px;
+                            padding: 20px;
+                        }
+
+                        .card-demo {
+                            background: #f8f8fa;
+                            border: 1px solid #ddd;
+                            border-radius: 8px;
+                            padding: 20px;
+                            text-align: center;
+                            flex: 1 1 200px;
+                        }
+
+                        @media (max-width: 600px) {
+                            .card-demo {
+                                flex: 1 1 100%;
+                            }
+                        }
+
+                        @media (min-width: 601px) and (max-width: 900px) {
+                            .card-demo {
+                                flex: 1 1 calc(50% - 20px);
+                            }
+                        }
+
+                        @media (min-width: 901px) {
+                            .card-demo {
+                                flex: 1 1 calc(33.33% - 20px);
+                            }
+                        }
+                    </style>
+                    <div class="cards-demo">
+                        <div class="card-demo"> Kartochka 1</div>
+                        <div class="card-demo"> Kartochka 2</div>
+                        <div class="card-demo"> Kartochka 3</div>
+                        <div class="card-demo"> Kartochka 4</div>
+                        <div class="card-demo"> Kartochka 5</div>
+                        <div class="card-demo"> Kartochka 6</div>
+                    </div>
+                </div>
+                <div class="resize-bar" id="cardsResize">━━━ Chetidan sudrab kenglikni o'zgartiring ━━━</div>
+                <div class="width-indicator" id="cardsWidth">Kenglik: ---px</div>
+            </div>
+
+            <script>
+                const cardsBody = document.getElementById('cardsBody');
+                const cardsWidthSpan = document.getElementById('cardsWidth');
+
+                function updateCardsWidth() {
+                    cardsWidthSpan.innerText = `Kenglik: ${cardsBody.offsetWidth}px — ustunlar soni o'zgaradi`;
+                }
+
+                let isResizingCards = false;
+                const cardsResize = document.getElementById('cardsResize');
+                cardsResize.addEventListener('mousedown', () => { isResizingCards = true; });
+                window.addEventListener('mouseup', () => { isResizingCards = false; });
+                window.addEventListener('mousemove', (e) => {
+                    if (isResizingCards) {
+                        const rect = cardsBody.getBoundingClientRect();
+                        const newWidth = e.clientX - rect.left;
+                        if (newWidth > 200 && newWidth < 1000) {
+                            cardsBody.style.width = newWidth + 'px';
+                            updateCardsWidth();
+                        }
+                    }
+                });
+                updateCardsWidth();
+            </script>
+
+            <div class="page-footer">
+                <span class="monday">css-media-queries</span>
+                <span>6 / 8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: Qo'shimcha misol - rang va fon -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2> Misol: Ekran o'lchamiga qarab rang o'zgarishi</h2>
+
+            <div class="preview-container">
+                <div class="preview-header">
+                    <span> Rangli misol</span>
+                    <span>Ekran o'lchamiga qarab fon rangi o'zgaradi</span>
+                </div>
+                <div class="preview-body" id="colorBody" style="padding: 0;">
+                    <style id="colorStyle">
+                        .color-demo {
+                            text-align: center;
+                            padding: 40px;
+                            background: #007aff;
+                            color: white;
+                            transition: all 0.3s;
+                        }
+
+                        @media (max-width: 600px) {
+                            .color-demo {
+                                background: #ff3b30;
+                                font-size: 14px;
+                            }
+                        }
+
+                        @media (min-width: 601px) and (max-width: 1024px) {
+                            .color-demo {
+                                background: #34c759;
+                                font-size: 18px;
+                            }
+                        }
+
+                        @media (min-width: 1025px) {
+                            .color-demo {
+                                background: #007aff;
+                                font-size: 22px;
+                            }
+                        }
+                    </style>
+                    <div class="color-demo">
+                        Rang va shrift o'zgaradi
+                        <div style="font-size: 12px; margin-top: 10px;">Telefon: qizil | Planshet: yashil | Kompyuter:
+                            ko'k</div>
+                    </div>
+                </div>
+                <div class="device-buttons">
+                    <button class="device-btn color-btn" data-width="375"> Telefon (375px)</button>
+                    <button class="device-btn color-btn" data-width="768"> Planshet (768px)</button>
+                    <button class="device-btn color-btn" data-width="1024"> Kompyuter (1024px)</button>
+                    <button class="device-btn color-btn active" data-width="auto"> Auto</button>
+                </div>
+                <div class="resize-bar" id="colorResize">━━━ Chetidan sudrab kenglikni o'zgartiring ━━━</div>
+                <div class="width-indicator" id="colorWidth">Kenglik: ---px</div>
+            </div>
+
+            <script>
+                const colorBody = document.getElementById('colorBody');
+                const colorWidthSpan = document.getElementById('colorWidth');
+                let colorWidthValue = 'auto';
+
+                function updateColorWidth(width) {
+                    if (width === 'auto') {
+                        colorBody.style.width = 'auto';
+                        colorWidthSpan.innerText = 'Kenglik: oyna o\'lchamiga moslashadi';
+                    } else {
+                        colorBody.style.width = width + 'px';
+                        colorWidthSpan.innerText = `Kenglik: ${width}px`;
+                    }
+                }
+
+                document.querySelectorAll('.color-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const width = btn.getAttribute('data-width');
+                        colorWidthValue = width;
+                        updateColorWidth(width);
+                    });
+                });
+
+                let isResizingColor = false;
+                const colorResize = document.getElementById('colorResize');
+                colorResize.addEventListener('mousedown', () => { isResizingColor = true; });
+                window.addEventListener('mouseup', () => { isResizingColor = false; });
+                window.addEventListener('mousemove', (e) => {
+                    if (isResizingColor && colorWidthValue === 'auto') {
+                        const rect = colorBody.getBoundingClientRect();
+                        const newWidth = e.clientX - rect.left;
+                        if (newWidth > 200 && newWidth < 1000) {
+                            colorBody.style.width = newWidth + 'px';
+                            colorWidthSpan.innerText = `Kenglik: ${Math.round(newWidth)}px`;
+                        }
+                    }
+                });
+            </script>
+
+            <div class="page-footer">
+                <span class="monday">css-media-queries</span>
+                <span>7 / 8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 8: Xulosa -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2> Xulosa</h2>
+
+            <ul>
+                <li><strong>@media</strong> — saytni turli qurilmalarga moslashtirish</li>
+                <li><strong>max-width</strong> — berilgan kenglikdan kichik ekranlar uchun</li>
+                <li><strong>min-width</strong> — berilgan kenglikdan katta ekranlar uchun</li>
+                <li><strong>Mobile First</strong> — avval telefon, keyin kattaroq ekranlar</li>
+                <li><strong>Breakpoints:</strong> 600px (telefon), 768px (planshet), 1024px (kompyuter)</li>
+            </ul>
+
+            <div class="note-box" style="background: #e8f5e9; border-left-color: #2e7d32;">
+                <strong>Amaliy maslahat:</strong> Chrome DevTools (F12) da turli qurilmalarni tanlab sinab ko'ring!
+            </div>
+
+            <div class="page-footer">
+                <span class="monday">css-media-queries</span>
+                <span>8 / 8</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
