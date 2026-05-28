@@ -1,0 +1,1 @@
+bu qo'lanma qismi juda murakkab narsalarni shu yerga yozish orqali juda ko'p malumotlarni ulashish mumkin bu yaxshi joy
